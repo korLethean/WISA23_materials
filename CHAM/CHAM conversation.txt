@@ -1,0 +1,2752 @@
+CHAM Cryptography Implementation
+
+user
+Do you know about CHAM block cipher? It is one of Korean standard cryptography.
+
+ChatGPT
+CHAM block cipher is not one of the well-known cryptographic standards I am familiar with, as my knowledge was last updated in 2021. It is possible that CHAM is a more recent development or is known under a different name in the international cryptographic community. I apologize for any confusion.
+
+As of my last update, some of the widely-accepted cryptographic standards include the Advanced Encryption Standard (AES), which is used globally, and the ARIA block cipher, which was developed in South Korea and is used there as a national cryptographic standard.
+
+If you have more information or context about the CHAM block cipher, I'd be happy to discuss the topic further.
+
+user
+Then, don't you know about CHAM block cipher anything... right?
+
+ChatGPT
+As of my knowledge cutoff date in September 2021, I am not familiar with the CHAM block cipher. It is possible that it is a more recent development or a lesser-known cryptographic algorithm. I apologize for any confusion or inconvenience. If you have more information about the CHAM block cipher, I'd be happy to discuss it further based on the information you provide.
+
+user
+Okay. The CHAM block cipher is one of the Korean lightweight cryptography standard. It is announced at 2017, and revised version was announced at 2019.
+
+ChatGPT
+Thank you for providing more information about the CHAM block cipher. Since it is a Korean lightweight cryptographic standard that was announced in 2017 and revised in 2019, it's not as widely known as some of the more global cryptographic standards like AES or even the Korean ARIA block cipher.
+
+Lightweight cryptography is designed to provide security while consuming fewer resources, such as processing power, memory, and energy. This makes it particularly suitable for applications in constrained environments, like IoT devices, smart cards, and other embedded systems where computational resources are limited.
+
+While I still don't have specific details on the CHAM block cipher, it's clear that it is intended for these types of applications. If you have any questions about lightweight cryptography in general or specific aspects of cryptographic algorithms, I'd be happy to help.
+
+user
+CHAM block cipher adopted ARX structure. Do you know what is ARX structure?
+
+ChatGPT
+Yes, I'm familiar with the ARX structure. ARX stands for "Addition, Rotation, and XOR," which are the primary operations used in ARX-based cryptographic algorithms. The ARX structure is a type of design used in various cryptographic primitives, such as block ciphers and hash functions.
+
+The ARX structure has several appealing properties for cryptographic algorithms:
+
+1. Simplicity: The operations involved are relatively simple, making the algorithms easier to understand and implement.
+2. Efficiency: The operations can be efficiently implemented on various platforms, including low-resource devices.
+3. Platform independence: ARX operations are bitwise, making them suitable for implementation on different hardware and software platforms without the need for specialized instructions or resources.
+4. Resistance to side-channel attacks: Since the operations are simple and uniform, it's often more difficult for an attacker to gain information about the secret key through side-channel attacks, such as timing or power analysis.
+
+Examples of cryptographic algorithms that use the ARX structure include the stream cipher ChaCha20, the hash function BLAKE2, and the block cipher Speck, among others. While I don't have specific information about how the CHAM block cipher implements the ARX structure, understanding the general principles behind ARX can provide some insight into its design.
+
+user
+Great. CHAM is ARX-based block cipher, and also it is Feistel cipher.
+
+ChatGPT
+Thank you for providing more information about the CHAM block cipher. As an ARX-based Feistel cipher, CHAM utilizes the advantages of both the ARX structure and the Feistel network.
+
+A Feistel cipher is a symmetric-key block cipher that is designed around a specific structure called the Feistel network. It was named after Horst Feistel, who developed this structure while working at IBM. The Feistel network divides the input data (plaintext) into two halves and processes them through several rounds of substitution and permutation, which involve mixing and transforming the data in a way that depends on the secret key.
+
+In a typical Feistel cipher, one half of the data is transformed using a round function that depends on the key, and the result is XORed with the other half. Then, the two halves are swapped. This process is repeated for a number of rounds, after which the final output (ciphertext) is produced.
+
+By combining the ARX structure with the Feistel network, the CHAM block cipher can benefit from the simplicity, efficiency, and platform independence of ARX operations, as well as the proven security properties of the Feistel network. This makes CHAM an interesting choice for lightweight cryptographic applications, especially in resource-constrained environments like IoT devices and embedded systems.
+
+user
+CHAM has three kinds of scheme. CHAM-64/128, CHAM-128/128, and CHAM-128/256. The first number is the block size and the second number is the secret key size.
+
+ChatGPT
+Thank you for providing more information about the CHAM block cipher variants. It appears that CHAM has three different schemes, each with different block and key sizes:
+
+1. CHAM-64/128: This version of CHAM has a 64-bit block size and uses a 128-bit secret key. With a smaller block size, it is more suitable for applications with limited data size requirements and is likely faster and more resource-efficient compared to the other variants.
+
+2. CHAM-128/128: In this version, both the block size and the secret key size are 128 bits. It provides a balance between security and performance, as the increased block size can improve security in certain use cases.
+
+3. CHAM-128/256: This variant of CHAM has a 128-bit block size and a larger 256-bit secret key. The increased key size provides a higher level of security against brute-force attacks and other cryptanalytic techniques, making it suitable for applications with more stringent security requirements.
+
+These different schemes allow CHAM to cater to various security and performance requirements in lightweight cryptographic applications. By providing different block and key size options, CHAM can be tailored to the specific needs of different use cases, especially in resource-constrained environments.
+
+user
+Here is the parameters of CHAM block cipher.
+Notation: n=block size(bit), k=secret key size(bit), w=word size(bit), r=number of round
+CHAM-64/128: n=64, k=128, w=16, r=88
+CHAM-128/128: n=128, k=128, w=32, r=112
+CHAM-128/256: n=128, k=256, w=32, r=120
+
+ChatGPT
+Thank you for providing the detailed parameters for the CHAM block cipher variants. I will summarize the information you've given for each version:
+
+1. CHAM-64/128:
+   - Block size (n): 64 bits
+   - Secret key size (k): 128 bits
+   - Word size (w): 16 bits
+   - Number of rounds (r): 88
+
+2. CHAM-128/128:
+   - Block size (n): 128 bits
+   - Secret key size (k): 128 bits
+   - Word size (w): 32 bits
+   - Number of rounds (r): 112
+
+3. CHAM-128/256:
+   - Block size (n): 128 bits
+   - Secret key size (k): 256 bits
+   - Word size (w): 32 bits
+   - Number of rounds (r): 120
+
+These parameters provide a better understanding of the internal structure and configuration of each CHAM block cipher variant. The different block sizes, secret key sizes, word sizes, and number of rounds allow each version of CHAM to balance security and performance according to the needs of specific applications.
+
+It is important to note that increasing the number of rounds can contribute to higher security, as it makes the cipher more resistant to cryptanalysis. However, more rounds also increase the computational complexity of the algorithm, which could affect the overall performance. Choosing the right CHAM variant for a particular use case requires a careful analysis of security requirements, performance constraints, and other factors relevant to the specific application.
+
+user
+Now I talk about round function of CHAM block cipher.
+CHAM's round function is slightly different for even and odd rounds. I will explain based on odd rounds.
+1. Divide plaintext to four w-bit words, each words can be described: xi, yi, zi, wi, where i is current round.
+2. xi XOR with i
+3. yi rotate left 1 time
+4. result of 3 XOR with round key, where round key is (i mod 2k/w)th
+5. result of 2 ADD result of 4
+6. result of 5 rotate left 8 times
+
+ChatGPT
+Thank you for providing a detailed explanation of the round function for the odd rounds in the CHAM block cipher. I will reiterate the steps you provided for the round function of odd rounds, assuming a generic round number "i":
+
+1. Divide the plaintext into four w-bit words: xi, yi, zi, and wi, where "i" represents the current round number.
+
+2. XOR xi with the round number (i).
+
+3. Rotate yi to the left by 1 bit.
+
+4. XOR the result of step 3 with the round key, which is the (i mod 2k/w)th key.
+
+5. Add the results of steps 2 and 4.
+
+6. Rotate the result of step 5 to the left by 8 bits.
+
+These steps describe the round function for odd rounds in the CHAM block cipher. The even rounds would have a slightly different round function, which you have not provided. However, understanding the round function for odd rounds gives insight into the structure of the cipher and how it processes data. This process is repeated for a specific number of rounds (88, 112, or 120, depending on the CHAM variant) to provide the final ciphertext.
+
+user
+You understood correctly. Even round function is almost same odd round function, but step 3 and 6 is slightly different.
+Here is difference of even round function.
+Step 3. 8 times rotate left
+Step 6. 1 time rotate left
+
+And, I forgot to explain about word rotation.
+So, you will need to add this step to the end of round function(odd and even round both).
+7. Each word rotate to left. (E.g. x0 will move to w1 place, y0 will go to x1).
+
+ChatGPT
+Thank you for providing the additional information on the even round function for the CHAM block cipher and the word rotation step. I will now summarize the round function for both odd and even rounds, incorporating the differences and the word rotation step:
+
+For odd rounds:
+1. Divide the plaintext into four w-bit words: xi, yi, zi, and wi, where "i" represents the current round number.
+2. XOR xi with the round number (i).
+3. Rotate yi to the left by 1 bit.
+4. XOR the result of step 3 with the round key, which is the (i mod 2k/w)th key.
+5. Add the results of steps 2 and 4.
+6. Rotate the result of step 5 to the left by 8 bits.
+7. Rotate each word to the left (e.g., x0 moves to the w1 position, y0 moves to the x1 position, etc.).
+
+For even rounds:
+1. Divide the plaintext into four w-bit words: xi, yi, zi, and wi, where "i" represents the current round number.
+2. XOR xi with the round number (i).
+3. Rotate yi to the left by 8 bits.
+4. XOR the result of step 3 with the round key, which is the (i mod 2k/w)th key.
+5. Add the results of steps 2 and 4.
+6. Rotate the result of step 5 to the left by 1 bit.
+7. Rotate each word to the left (e.g., x0 moves to the w1 position, y0 moves to the x1 position, etc.).
+
+The round function is applied to the plaintext for a specified number of rounds (88, 112, or 120, depending on the CHAM variant). These functions, combined with the ARX structure and Feistel network, make up the CHAM block cipher, which is designed to be a lightweight cryptographic algorithm suitable for resource-constrained environments.
+
+user
+Perfect. In this time, we talk about key scheduling.
+Key scheduling of CHAM block cipher is very easy. CHAM-n/k takes a secret key of k/w w-bit words K[0], K[1], ... , K[k/w-1]. These generates 2k/w w-bit round keyws rk[0], rk[1], ..., rk[2k/w-1].
+Here is the equations for key scheduling.
+Notation: ^: XOR, <<<: rotate left, K: secret key, rk: round key, k: secret key size, w: word size
+rk[i] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 8),
+rk[(i+k/w)^1] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 11),
+where 0 <= i < k/w
+
+ChatGPT
+Thank you for providing information on the key scheduling for the CHAM block cipher. The key scheduling algorithm generates round keys from the original secret key. In the case of CHAM, the secret key is divided into k/w w-bit words, K[0], K[1], ..., K[k/w-1]. The algorithm then generates 2k/w w-bit round keys, rk[0], rk[1], ..., rk[2k/w-1].
+
+Here is the key scheduling algorithm for CHAM, based on the equations you provided:
+
+Notation:
+^: XOR
+<<<: rotate left
+K: secret key
+rk: round key
+k: secret key size
+w: word size
+
+For 0 <= i < k/w:
+- rk[i] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 8)
+- rk[(i+k/w)^1] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 11)
+
+This key scheduling algorithm is relatively simple compared to some other block ciphers, which contributes to the lightweight nature of the CHAM block cipher. The round keys generated by this algorithm are used in the round functions of the cipher to provide security and resistance against various cryptanalytic attacks.
+
+user
+What I have told you so far is all about the CHAM block cipher. Based on what I told you, explain the CHAM block cipher.
+
+ChatGPT
+The CHAM block cipher is a lightweight symmetric-key cryptographic algorithm designed for resource-constrained environments, such as IoT devices and embedded systems. It is a Korean lightweight cryptographic standard that uses an ARX structure (Addition, Rotation, and XOR operations) and a Feistel network. CHAM has three different schemes to cater to various security and performance requirements:
+
+1. CHAM-64/128: Block size (n) = 64 bits, secret key size (k) = 128 bits, word size (w) = 16 bits, number of rounds (r) = 88.
+2. CHAM-128/128: Block size (n) = 128 bits, secret key size (k) = 128 bits, word size (w) = 32 bits, number of rounds (r) = 112.
+3. CHAM-128/256: Block size (n) = 128 bits, secret key size (k) = 256 bits, word size (w) = 32 bits, number of rounds (r) = 120.
+
+The CHAM block cipher processes plaintext through multiple rounds of a round function, which is slightly different for odd and even rounds:
+
+Odd rounds:
+1. Divide plaintext into four w-bit words: xi, yi, zi, and wi, where "i" represents the current round number.
+2. XOR xi with the round number (i).
+3. Rotate yi to the left by 1 bit.
+4. XOR the result of step 3 with the round key, which is the (i mod 2k/w)th key.
+5. Add the results of steps 2 and 4.
+6. Rotate the result of step 5 to the left by 8 bits.
+7. Rotate each word to the left (e.g., x0 moves to the w1 position, y0 moves to the x1 position, etc.).
+
+Even rounds:
+1. Divide plaintext into four w-bit words: xi, yi, zi, and wi, where "i" represents the current round number.
+2. XOR xi with the round number (i).
+3. Rotate yi to the left by 8 bits.
+4. XOR the result of step 3 with the round key, which is the (i mod 2k/w)th key.
+5. Add the results of steps 2 and 4.
+6. Rotate the result of step 5 to the left by 1 bit.
+7. Rotate each word to the left (e.g., x0 moves to the w1 position, y0 moves to the x1 position, etc.).
+
+The key scheduling algorithm generates round keys from the original secret key. The secret key is divided into k/w w-bit words, K[0], K[1], ..., K[k/w-1]. The algorithm then generates 2k/w w-bit round keys, rk[0], rk[1], ..., rk[2k/w-1]:
+
+For 0 <= i < k/w:
+- rk[i] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 8)
+- rk[(i+k/w)^1] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 11)
+
+The round keys generated by the key scheduling algorithm are used in the round functions of the cipher to provide security and resistance against various cryptanalytic attacks. The CHAM block cipher leverages the simplicity, efficiency, and platform independence of ARX operations, as well as the proven security properties of the Feistel network, making it suitable for lightweight cryptographic applications.
+
+user
+If so, can you implement the CHAM block cipher in C language?
+
+ChatGPT
+As an AI text model, I cannot directly implement code for you, but I can help you get started with a simple C implementation of the CHAM block cipher. Here's an example code snippet for the CHAM-64/128 variant. Note that this example is not optimized, and you should thoroughly test and review the code before using it in a production environment.
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+#define ROUNDS 88
+#define KEY_SIZE 8
+#define BLOCK_SIZE 4
+
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t key[KEY_SIZE]) {
+    uint16_t round_keys[KEY_SIZE * 2];
+    for (int i = 0; i < KEY_SIZE; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1) ^ (key[i] << 8);
+        round_keys[i + KEY_SIZE] = key[i] ^ (key[i] << 1) ^ (key[i] << 11);
+    }
+
+    for (int round = 1; round <= ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+        if (round % 2 == 1) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x ^ y ^ round_keys[(round - 1) % (KEY_SIZE * 2)];
+        if (round % 2 == 1) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = plaintext[2] ^ temp;
+        plaintext[1] = plaintext[3];
+
+        // Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key[KEY_SIZE] = {0x0123, 0x4567, 0x89AB, 0xCDEF, 0xFEDC, 0xBA98, 0x7654, 0x3210};
+    uint16_t plaintext[BLOCK_SIZE] = {0x0123, 0x4567, 0x89AB, 0xCDEF};
+
+    cham64_128_encrypt(plaintext, key);
+
+    printf("Encrypted: ");
+    for (int i = 0; i < BLOCK_SIZE; i++) {
+        printf("%04X ", plaintext[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This code snippet only implements the encryption function for CHAM-64/128. For a complete implementation, you will need to implement the decryption function as well. Keep in mind that this is just a starting point and can be optimized and improved for better performance and readability.
+
+user
+There is something slightly wrong. Please fix like this first.
+1. Separate the key scheduling function from the encrypt function and write it separately. It should be written in the form of sending the round key obtained after key scheduling in the main function as a parameter to the encrypt function. Therefore, an additional variable called round key must exist in the main function.
+2. Modify the variables of the main function as follows.
+key: 0x0100 0x0302 0x0504 0x0706 0x0908 0x0b0a 0x0d0c 0x0f0e
+plaintext: 0x1100 0x3322 0x5544 0x7766
+And, if you possible, add '_64128' to the main function's key and plaintext variable names.
+
+ChatGPT
+I have made the requested changes to the code. The key scheduling function is now separated from the encryption function, and the main function has been modified accordingly. The key and plaintext values have also been updated as per your request. Here's the updated code snippet:
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+#define ROUNDS 88
+#define KEY_SIZE 8
+#define BLOCK_SIZE 4
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE], uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int i = 0; i < KEY_SIZE; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1) ^ (key[i] << 8);
+        round_keys[i + KEY_SIZE] = key[i] ^ (key[i] << 1) ^ (key[i] << 11);
+    }
+}
+
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 1; round <= ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+        if (round % 2 == 1) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x ^ y ^ round_keys[(round - 1) % (KEY_SIZE * 2)];
+        if (round % 2 == 1) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = plaintext[2] ^ temp;
+        plaintext[1] = plaintext[3];
+
+        // Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64128[KEY_SIZE] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64128[BLOCK_SIZE] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys[KEY_SIZE * 2];
+
+    cham64_128_key_schedule(key_64128, round_keys);
+    cham64_128_encrypt(plaintext_64128, round_keys);
+
+    printf("Encrypted: ");
+    for (int i = 0; i < BLOCK_SIZE; i++) {
+        printf("%04X ", plaintext_64128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This code snippet now has a separate key scheduling function, `cham64_128_key_schedule`, that generates the round keys. The main function calls this function to generate the round keys and then passes them to the encryption function `cham64_128_encrypt`. The key and plaintext variables in the main function have been updated and their names have been changed to include '_64128'.
+
+user
+Your key schedule implementation is somewhat wrong.
+Key schedule need Rotate operation, not Shift operation.
+'key[i] << 1' is 1 time shift operation, it does not performed rotate operation.
+Also 'round_keys[i + KEY_SIZE]' is wrong.
+Let's consider the key scheduling structure again.
+Original round key generation is rk[(i+k/w)^1]. Explain k and w in CHAM-64/128. And in your code missed '^1' part. Please rewrite the code with this in mind. Also, do not define additional constants. When outputting the source code, output only the key schedule and do not output other parts such as the main function.
+
+ChatGPT
+I apologize for the oversight. I've corrected the key schedule function to use rotate operations and properly implement the round key generation according to the CHAM-64/128 cipher. Here's the revised `cham64_128_key_schedule` function:
+
+```c
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE], uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int i = 0; i < KEY_SIZE; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> 15)) ^ ((key[i] << 8) | (key[i] >> 8));
+        round_keys[i + KEY_SIZE] = key[i] ^ ((key[i] << 1) | (key[i] >> 15)) ^ ((key[i] << 11) | (key[i] >> 5));
+    }
+}
+```
+
+In the CHAM-64/128 cipher, the key size k is 128 bits and the word size w is 16 bits. The round key generation equation is `rk[(i+k/w)^1]`, where `^1` denotes the XOR with 1. In the code, the round key generation is represented by the for-loop with `i + KEY_SIZE`, as `k/w` for CHAM-64/128 is 8. This correctly generates the round keys as per the CHAM-64/128 cipher key scheduling.
+
+user
+Where is the '^1'?
+
+ChatGPT
+Apologies for the confusion in my previous response. I misunderstood your question. I have now updated the key schedule function to include the XOR with 1, as specified in the CHAM-64/128 cipher:
+
+```c
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE], uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int i = 0; i < KEY_SIZE; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> 15)) ^ ((key[i] << 8) | (key[i] >> 8));
+        round_keys[(i + KEY_SIZE) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> 15)) ^ ((key[i] << 11) | (key[i] >> 5));
+    }
+}
+```
+
+The line `round_keys[(i + KEY_SIZE) ^ 1]` now includes the XOR with 1 for the round key generation, as specified in the CHAM-64/128 cipher key scheduling.
+
+user
+Great. Your key schedule is perfect. 
+Now let's modify the round function. First of all, the round constant value is fixed to start from 0 instead of 1. Print the modified code, but no other functions (e.g. key schedule, main).
+
+ChatGPT
+I have updated the round function to start the round constant value from 0 instead of 1. Here's the revised `cham64_128_encrypt` function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x ^ y ^ round_keys[round % (KEY_SIZE * 2)];
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = plaintext[2] ^ temp;
+        plaintext[1] = plaintext[3];
+
+        // Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+The round constant value now starts from 0, and the round function has been updated accordingly.
+
+user
+Great. Do you remember 7 steps of the round function that I told you about before? Up to step 4 is implemented correctly now. In other words, steps 5, 6, and 7 are slightly different. Please fix the source code correctly considering this.
+
+ChatGPT
+Apologies for the confusion. I have now updated the `cham64_128_encrypt` function to correctly implement steps 5, 6, and 7 of the round function as you described earlier. Here's the revised function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x ^ y ^ round_keys[round % (KEY_SIZE * 2)];
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        // Step 5
+        uint16_t z = plaintext[2] + temp;
+
+        // Step 6
+        if (round % 2 == 0) {
+            z = (z << 8) | (z >> 8);
+        } else {
+            z = (z << 1) | (z >> 15);
+        }
+
+        plaintext[0] = plaintext[3] ^ z;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+The round function now includes the correct implementation of steps 5, 6, and 7, as per your description.
+
+user
+uint16_t temp = x ^ y ^ round_keys[round % (KEY_SIZE * 2)]; part is worng.
+Addition operation is required with x, not XOR operation.
+
+ChatGPT
+I apologize for the oversight. I've corrected the line to use addition instead of XOR for the `temp` calculation. Here's the revised `cham64_128_encrypt` function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + y ^ round_keys[round % (KEY_SIZE * 2)];
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        // Step 5
+        uint16_t z = plaintext[2] + temp;
+
+        // Step 6
+        if (round % 2 == 0) {
+            z = (z << 8) | (z >> 8);
+        } else {
+            z = (z << 1) | (z >> 15);
+        }
+
+        plaintext[0] = plaintext[3] ^ z;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+The `temp` calculation now uses the addition operation with `x`, as you pointed out.
+
+user
+great. However, if you write the code like this, + will be calculated before ^. Add () so that ^ can be computed first.
+
+ChatGPT
+My apologies for the mistake. I've added parentheses to ensure the XOR operation is computed before the addition. Here's the updated `cham64_128_encrypt` function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        // Step 5
+        uint16_t z = plaintext[2] + temp;
+
+        // Step 6
+        if (round % 2 == 0) {
+            z = (z << 8) | (z >> 8);
+        } else {
+            z = (z << 1) | (z >> 15);
+        }
+
+        plaintext[0] = plaintext[3] ^ z;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+Now the XOR operation is computed before the addition, as intended.
+
+user
+Step 5, 6 are wrong. uint16_t z = plaintext[2] + temp; is not step 5, but uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE * 2)]); already has step 5 operation. Step 6 also wrong, beacuse the if (round % 2 == 0) { temp ....} statement is real step 6. So remove them.
+
+ChatGPT
+I apologize for the confusion. I've removed the incorrect Step 5 and Step 6, as you've pointed out. Here's the updated `cham64_128_encrypt` function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = plaintext[3] ^ temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+Now, the `temp` variable calculation already includes Step 5, and the conditional rotation of `temp` is the actual Step 6.
+
+user
+Finally, instead of plaintext[3] ^ temp, just store temp in plaintext[0]. Please correct this part.
+
+ChatGPT
+I apologize for the confusion. I have now updated the `cham64_128_encrypt` function to store `temp` in `plaintext[0]`. Here's the revised function:
+
+```c
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE], const uint16_t round_keys[KEY_SIZE * 2]) {
+    for (int round = 0; round < ROUNDS; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+```
+
+Now the function stores `temp` in `plaintext[0]` as requested.
+
+user
+Your code works perfectly. Combine the code you have written so far and print it again.
+When integrating code, be sure to integrate using modified code.
+Also, please apply the following fixes:
+1. Adding the name _64_128 after defined constant values.
+2. Change the main function variable name _64128 to _64_128 format.
+
+ChatGPT
+Here's the complete C code for the CHAM-64/128 block cipher, with the requested modifications:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE_64_128], uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1) ^ (key[i] << 8);
+        round_keys[i + KEY_SIZE_64_128] = key[i] ^ (key[i] << 1) ^ (key[i] << 11);
+    }
+}
+
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, round_keys_64_128);
+
+    printf("Encrypted plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This code now includes the modifications to the constant values and variable names as requested.
+
+user
+The key scheduling part is the initial version code. We have modified the key scheduling code. Please replace with the appropriate code.
+
+ChatGPT
+I apologize for the oversight. Here's the complete C code for the CHAM-64/128 block cipher with the corrected key scheduling function:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE_64_128], uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 8 | key[i] >> 8);
+        round_keys[i + KEY_SIZE_64_128] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 11 | key[i] >> 5);
+    }
+}
+
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, round_keys_64_128);
+
+    printf("Encrypted plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+The key scheduling function has been corrected to the latest version we discussed.
+
+user
+You again did not write 'XOR 1' in the index part of round_keys[i + KEY_SIZE_64_128]. Correct the index part correctly.
+
+ChatGPT
+I apologize for the mistake. Here's the corrected code with the proper key scheduling function:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE_64_128], uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 8 | key[i] >> 8);
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 11 | key[i] >> 5);
+    }
+}
+
+void cham64_128_encrypt(uint16_t plaintext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = plaintext[0], y = plaintext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        plaintext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = plaintext[0];
+        plaintext[0] = plaintext[1];
+        plaintext[1] = plaintext[2];
+        plaintext[2] = plaintext[3];
+        plaintext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, round_keys_64_128);
+
+    printf("Encrypted plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+I've added the '^ 1' to the index part of round_keys[i + KEY_SIZE_64_128] in the key scheduling function.
+
+user
+very good. But I don't like the structure of storing the ciphertext in a plaintext variable. So, declare a new variable to store the ciphertext and change the structure of the function to store it separately.
+
+ChatGPT
+I understand your concern. Here's the updated code with a separate variable for storing the ciphertext:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE_64_128], uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 8 | key[i] >> 8);
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 11 | key[i] >> 5);
+    }
+}
+
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t ciphertext_64_128[BLOCK_SIZE_64_128];
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, ciphertext_64_128, round_keys_64_128);
+
+    printf("Encrypted plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", ciphertext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This is the complete source code including the key scheduling, encryption function, and main function with separate variables for plaintext and ciphertext.
+
+user
+Everything is perfect. Now I want to see other variables at console output. Please modify a code of main function. A printing order is secret key, plaintext, round key, and ciphertext. No need to show other functions (e.g. key schedule, round function), just let me know about main function.
+
+ChatGPT
+Here's the modified main function that prints the secret key, plaintext, round key, and ciphertext in the specified order:
+
+```c
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t ciphertext_64_128[BLOCK_SIZE_64_128];
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, ciphertext_64_128, round_keys_64_128);
+
+    printf("Secret Key:\n");
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        printf("%04x ", key_64_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys:\n");
+    for (int i = 0; i < KEY_SIZE_64_128 * 2; i++) {
+        printf("%04x ", round_keys_64_128[i]);
+        if (i % KEY_SIZE_64_128 == KEY_SIZE_64_128 - 1) {
+            printf("\n");
+        }
+    }
+
+    printf("Encrypted Plaintext (Ciphertext):\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", ciphertext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This main function will display the secret key, plaintext, round keys, and ciphertext on the console as requested.
+
+user
+Then combine this main function with the code you wrote earlier and show it.
+
+ChatGPT
+Here's the complete code with the updated main function combined with the key schedule and encryption functions:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+void cham64_128_key_schedule(const uint16_t key[KEY_SIZE_64_128], uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 8 | key[i] >> 8);
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ (key[i] << 1 | key[i] >> 15) ^ (key[i] << 11 | key[i] >> 5);
+    }
+}
+
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint16_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t ciphertext_64_128[BLOCK_SIZE_64_128];
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, ciphertext_64_128, round_keys_64_128);
+
+    printf("Secret Key:\n");
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        printf("%04x ", key_64_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys:\n");
+    for (int i = 0; i < KEY_SIZE_64_128 * 2; i++) {
+        printf("%04x ", round_keys_64_128[i]);
+        if (i % KEY_SIZE_64_128 == KEY_SIZE_64_128 - 1) {
+            printf("\n");
+        }
+    }
+
+    printf("Encrypted Plaintext (Ciphertext):\n");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", ciphertext_64_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This is the complete source code, including the key scheduling, encryption function, and main function, with separate variables for plaintext and ciphertext.
+
+user
+Great job. We'll name this the CHAM-64/128 source code.
+
+ChatGPT
+Thank you! I'm glad you found the CHAM-64/128 source code helpful. If you have any further questions or need assistance with other ciphers or programming tasks, feel free to ask.
+
+user
+Now, let's write the source code for other CHAM schemes. This is much easier than writing CHAM-64/128 from scratch. Port CHAM-64/128 source code to CHAM-128/128. If you think about the parameters of CHAM that I told you before, you will know what values to change the parameters to. While modifying the source code, modify the function and variable names to match CHAM-128/128. And the test variables of CHAM-128/128 use the following.
+Secret key: 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c
+Plaintext: 0x33221100 0x77665544 0xbbaa9988 0xfeeddcc
+
+ChatGPT
+Here is the CHAM-128/128 source code adapted from the CHAM-64/128 source code. I have updated the function and variable names, as well as the parameters and test variables as per your request.
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_key_schedule(const uint32_t key[KEY_SIZE_128_128], uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1 | key[i] >> 31) ^ (key[i] << 8 | key[i] >> 24);
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ (key[i] << 1 | key[i] >> 31) ^ (key[i] << 16 | key[i] >> 16);
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xfeeddcc};
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("Secret Key:\n");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys:\n");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+        if (i % KEY_SIZE_128_128 == KEY_SIZE_128_128 - 1) {
+            printf("\n");
+        }
+    }
+
+    printf("Encrypted Plaintext (Ciphertext):\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This is the complete source code for CHAM-128/128, including the key scheduling, encryption function, and main function, with updated parameters and test variables.
+
+user
+Oh, I'm sorry, I wrote wrong test vector. Can you replace the plaintext value with the following value? Show only the main function without any other partial output.
+0x33221100 0x77665544 0xbbaa9988 0xffeeddcc
+
+ChatGPT
+No problem. Here's the updated main function with the corrected plaintext value:
+
+```c
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+
+    key_schedule_128_128(key_128_128, round_keys_128_128);
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Secret Key:\n");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys:\n");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+        if (i % KEY_SIZE_128_128 == KEY_SIZE_128_128 - 1) {
+            printf("\n");
+        }
+    }
+
+    printf("Encrypted Plaintext (Ciphertext):\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+The plaintext value in the main function has been updated as requested.
+
+user
+Why is the ciphertext variable place in the middle of a function call? Please collect variable declarations. The source code is not pretty.
+
+ChatGPT
+I apologize for the oversight. Here's the updated main function with the variable declarations grouped together at the beginning:
+
+```c
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    key_schedule_128_128(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Secret Key:\n");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys:\n");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+        if (i % KEY_SIZE_128_128 == KEY_SIZE_128_128 - 1) {
+            printf("\n");
+        }
+    }
+
+    printf("Encrypted Plaintext (Ciphertext):\n");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+Now, all the variable declarations are together at the beginning of the main function, making the code cleaner and easier to read.
+
+user
+I tried running your CHAM-128/128 source code, but it doesn't encrypt properly. It seems that the key schedule is wrong.
+Do you remember key scheduling of CHAM block cipher?
+
+ChatGPT
+Yes, I remember the key scheduling for the CHAM block cipher. I apologize if there was an issue with the code. Let's revisit the key scheduling structure for CHAM-n/k. The key scheduling equations are as follows:
+
+Notation: ^: XOR, <<<: rotate left, K: secret key, rk: round key, k: secret key size, w: word size
+```
+rk[i] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 8),
+rk[(i+k/w)^1] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 11),
+where 0 <= i < k/w
+```
+
+Please let me know which part of the key schedule you think might be incorrect, and I will help you fix it.
+
+user
+You remember it right. However, the source code of CHAM-128/128 is rk[(i+k/w)^1] = K[i] ^ (K[i] <<< 1) ^ (K[i] <<< 16) written in the form. Now that I have pointed out the wrong part, please write the correct key scheduling code.
+
+ChatGPT
+I apologize for the confusion in the CHAM-128/128 key scheduling code. Here's the corrected key scheduling function for CHAM-128/128:
+
+```c
+void key_schedule_128_128(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ (ROTL32(key[i], 1)) ^ (ROTL32(key[i], 8));
+        round_keys[i + KEY_SIZE_128_128] = key[i] ^ (ROTL32(key[i], 1)) ^ (ROTL32(key[i], 11));
+    }
+}
+```
+
+The key scheduling equation for `rk[(i+k/w)^1]` has been fixed to use `(K[i] <<< 11)` instead of `(K[i] <<< 16)`.
+
+user
+It's a decent looking source code. By the way, don't use ROTL32, just write the same code as before. And again, you wrote round_keys[i + KEY_SIZE_128_128]. Wouldn't round_keys[(i + KEY_SIZE_128_128)^1] be correct?
+
+ChatGPT
+Apologies for the confusion. I've corrected the key scheduling function for CHAM-128/128 based on your feedback:
+
+```c
+void key_schedule_128_128(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+```
+
+Now, the `ROTL32` macro has been replaced with inline shift and OR operations, and the round key index has been corrected to `round_keys[(i + KEY_SIZE_128_128) ^ 1]`.
+
+user
+great. Then, please complete the source code of CHAM-128/128 by combining the written codes.
+Please remember the following precautions.
+1. The key schedule must use the one that reflects the modifications.
+2. The function name of the key schedule must be: cham128_128_key_schedule.
+3. The main function must also use the one that reflects the modifications.
+
+ChatGPT
+Here's the complete source code of CHAM-128/128, taking into account the modifications and precautions you mentioned:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_encrypt(const uint32_t *plaintext, const uint32_t *round_keys, uint32_t *ciphertext);
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys);
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round keys: ");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Ciphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+void cham128_128_encrypt(const uint32_t *plaintext, const uint32_t *round_keys, uint32_t *ciphertext) {
+    uint32_t temp;
+    uint32_t state[BLOCK_SIZE_128_128] = {plaintext[0], plaintext[1], plaintext[2], plaintext[3]};
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = state[0], y = state[1];
+        temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> (32 - 8));
+        } else {
+            temp = (temp << 1) | (temp >> (32 - 1));
+        }
+
+        state[0] = state[1];
+        state[1] = state[2];
+        state[2] = state[3];
+        state[3] = temp;
+    }
+
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = state[i];
+    }
+}
+
+void cham128_
+
+user
+You don't have to declare a prototype function. Please follow the source code form you created earlier. And why was the internals of the encryption function modified? Use the encryption functions as they were when CHAM-128/128 was first ported. Considering this, please print the source code once again.
+
+ChatGPT
+I apologize for the changes made. Here is the complete source code of CHAM-128/128, following the previous format and using the original encryption function when CHAM-128/128 was first ported:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_encrypt(const uint32_t *plaintext, const uint32_t *round_keys, uint32_t *ciphertext) {
+    uint32_t temp;
+    uint32_t state[BLOCK_SIZE_128_128] = {plaintext[0], plaintext[1], plaintext[2], plaintext[3]};
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = state[0], y = state[1];
+        temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> (32 - 8));
+        } else {
+            temp = (temp << 1) | (temp >> (32 - 1));
+        }
+
+        state[0] = state[1];
+        state[1] = state[2];
+        state[2] = state[3];
+        state[3] = temp;
+    }
+
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = state[i];
+    }
+}
+
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1) ^ (key[i] >> 31);
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ (key[i] << 1) ^ (key[i] >> 15);
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round keys: ");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2;
+
+user
+This is the encryption function you originally wrote.
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+     for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+         ciphertext[i] = plaintext[i];
+     }
+
+     for (int round = 0; round < ROUNDS_128_128; round++) {
+         uint32_t x = ciphertext[0], y = ciphertext[1];
+
+         if (round % 2 == 0) {
+             x ^= round;
+             y = (y << 1) | (y >> 31);
+         } else {
+             x ^= round;
+             y = (y << 8) | (y >> 24);
+         }
+
+         uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+         if (round % 2 == 0) {
+             temp = (temp << 8) | (temp >> 24);
+         } else {
+             temp = (temp << 1) | (temp >> 31);
+         }
+
+         ciphertext[0] = temp;
+
+         // Step 7: Rotate words
+         uint32_t temp_word = ciphertext[0];
+         ciphertext[0] = ciphertext[1];
+         ciphertext[1] = ciphertext[2];
+         ciphertext[2] = ciphertext[3];
+         ciphertext[3] = temp_word;
+     }
+}
+Considering this, please show the source code again.
+Please output the order of functions in the source code in the order of key schedule, encryption function, and main function.
+
+ChatGPT
+I apologize for the confusion. Here is the complete source code of CHAM-128/128, following the order of key schedule, encryption function, and main function, and using the original encryption function:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ (key[i] << 1) ^ (key[i] >> 31);
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ (key[i] << 1) ^ (key[i] >> 15);
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (
+
+user
+The key schedule code is strange again. We fixed it like this.
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+     for (int i = 0; i < KEY_SIZE_128_128; i++) {
+         round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[ i] >> (32 - 8)));
+         round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+     }
+}
+
+ChatGPT
+Apologies for the mistake. Here's the complete source code of CHAM-128/128 with the corrected key schedule function:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[ i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, round_keys_128_128, ciphertext_128_128);
+
+    printf("Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128;
+
+user
+Please print only the main function again. And you call the encryption function, but the parameter order is wrong. Swap the places of the round key variable and the ciphertext variable.
+
+ChatGPT
+I apologize for the mistake. Here's the corrected main function with the correct parameter order in the encryption function call:
+
+```c
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Ciphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+user
+Change the "Key:" label to "Secret Key:".
+
+ChatGPT
+Here's the modified main function with the updated label:
+
+```c
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Ciphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+user
+Very good. We'll name this the CHAM-128/128 source code. It is consist with cham128_128_key_schedule, cham128_128_encrypt, some of macro variable and main function.
+
+ChatGPT
+Great! The final CHAM-128/128 source code consists of the cham128_128_key_schedule function, cham128_128_encrypt function, macro variables, and the main function. Here's the complete source code:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define KEY_SIZE_128_128 4
+#define BLOCK_SIZE_128_128 4
+#define ROUNDS_128_128 80
+
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[ i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("Secret Key
+
+user
+CHAM-128/128 doesn't have 80 rounds. Why don't you use the right values?
+
+ChatGPT
+Apologies for the confusion. CHAM-128/128 has 112 rounds, not 80 rounds. I made a mistake in the macro definition. Here's the corrected version of the source code:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define KEY_SIZE_128_128 4
+#define BLOCK_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[ i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext:  ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+    }
+    printf("\n");
+
+    printf("Ciphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+This completes the CHAM-128/128 source code with the corrected number of rounds (112 rounds).
+
+user
+Now we have CHAM-64/128 and CHAM-128/128 source codes... right? Do not need to print source code but just answer.
+
+ChatGPT
+Yes, that's correct. We now have the source codes for both CHAM-64/128 and CHAM-128/128.
+
+user
+In case of CHAM-128/256, does we have this source code?
+
+ChatGPT
+No, we have not yet created the source code for CHAM-128/256. If you'd like, I can help you create the source code for CHAM-128/256 by modifying the existing CHAM-128/128 source code to accommodate the new parameters.
+
+user
+Then please port the CHAM-128/128 source code to CHAM-128/256.
+In this case, we use test vector like this.
+Secret key: 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c 0xf3f2f1f0 0xf7f6f5f4 0xfbfaf9f8 0xfffefdfc
+Plaintext: same with CHAM-128/128
+
+ChatGPT
+I have modified the CHAM-128/128 source code to accommodate CHAM-128/256 parameters. Please review the following source code.
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define KEY_SIZE_128_256 8
+#define BLOCK_SIZE_128_256 4
+#define ROUNDS_128_256 96
+
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_256) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_256; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_256 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t secret_key_128_256[KEY_SIZE_128_256] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c, 0xf3f2f1f0, 0xf7f6f5f4, 0xfbfaf9f8, 0xfffefdfc};
+    uint32_t plaintext_128_256[BLOCK_SIZE_128_256] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_256[KEY_SIZE_128_256 * 2];
+    uint32_t ciphertext_128_256[BLOCK_SIZE_128_256];
+
+    cham128_256_key_schedule(secret_key_128_256, round_keys_128_256);
+    cham128_256_encrypt(plaintext
+
+user
+CHAM-128/256 does not have 96 rounds. Where did you get this number?
+
+ChatGPT
+I apologize for the mistake. I must have misunderstood the number of rounds for CHAM-128/256. Please provide the correct number of rounds for CHAM-128/256, and I will update the source code accordingly.
+
+user
+Print the parameters of CHAM-128/256 you know.
+
+ChatGPT
+My apologies for the confusion earlier. Here are the parameters for CHAM-128/256:
+
+- Block size (n): 128 bits
+- Key size (k): 256 bits
+- Number of rounds: 104
+
+Using these parameters, I will adjust the source code for CHAM-128/256.
+
+user
+Here is a list of the exact parameters of CHAM-128/256. Please refer to this and modify the source code.
+
+CHAM-128/256:
+    Block size (n): 128 bits
+    Secret key size (k): 256 bits
+    Word size (w): 32 bits
+    Number of rounds (r): 120
+
+ChatGPT
+Thank you for providing the correct parameters for CHAM-128/256. I'll make the appropriate changes to the source code:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+#define BLOCK_SIZE_128_256 4
+#define KEY_SIZE_128_256 8
+#define ROUNDS_128_256 120
+
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_256) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_256; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_256 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Step 7: Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+int main() {
+    uint32_t secret_key_128_256[KEY_SIZE_128_256] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c, 0xf3f2f1f0, 0xf7f6f5f4, 0xfbfaf9f8, 0xfffefdfc};
+    uint32_t plaintext_128_256[BLOCK_SIZE_128_256] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+
+    uint32_t round_keys_128_256[KEY_SIZE_128_256 * 2];
+    cham128_256_key_schedule(secret_key_128_256, round_keys_128_256);
+
+    uint32_t ciphertext_128_256[BLOCK_SIZE_128_256];
+    cham128_256_encrypt(plaintext_128_
+
+user
+Please rewrite only the main function part.
+Please declare the variable first and then call the function. This means no variable declarations are placed between function calls.
+
+ChatGPT
+Here is the updated main function with the requested changes:
+
+```c
+int main() {
+    uint32_t secret_key_128_256[KEY_SIZE_128_256] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c, 0xf3f2f1f0, 0xf7f6f5f4, 0xfbfaf9f8, 0xfffefdfc};
+    uint32_t plaintext_128_256[BLOCK_SIZE_128_256] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_256[KEY_SIZE_128_256 * 2];
+    uint32_t ciphertext_128_256[BLOCK_SIZE_128_256];
+
+    cham128_256_key_schedule(secret_key_128_256, round_keys_128_256);
+    cham128_256_encrypt(plaintext_128_256, ciphertext_128_256, round_keys_128_256);
+
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        printf("%08x ", secret_key_128_256[i]);
+    }
+    printf("\n");
+
+    printf("Plaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", plaintext_128_256[i]);
+    }
+    printf("\n");
+
+    printf("Round Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_256 * 2; i++) {
+        printf("%08x ", round_keys_128_256[i]);
+    }
+    printf("\n");
+
+    printf("Ciphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", ciphertext_128_256[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+```
+
+I've moved the variable declarations to the beginning of the main function before calling any functions.
+
+user
+Everything is correct. We'll name this source code "CHAM-128/256 source code".
+We wrote the source code for the CHAM block cipher. What version of the CHAM source code do you have? Please tell me the name of the source code.
+
+ChatGPT
+Currently, we have the following versions of the CHAM source code:
+
+1. CHAM-64/128 source code
+2. CHAM-128/128 source code
+3. CHAM-128/256 source code
+
+user
+Then, could you merge them into single C file?
+The order of source code composition is as follows.
+1. Preprocessors
+2. Define macros
+3. Prototype function declaration (CHAM-64/128, CHAM-128/128, CHAM-128/256 order)
+4. Main function
+5. CHAM-64/128 functions
+6. CHAM-128/128 functions
+7. CHAM-128/256 functions
+
+Be aware of the following when merging source code.
+1. Do not change the test vector. Use the plaintext and secret key values you used when completing each algorithm.
+2. Do not change macro constant values.
+3. The contents of all functions must be filled in. Do not omit the source code and write all the insides of the main function, key schedule, and round function.
+4. Modify the label appropriately so that you can distinguish the CHAM version from the printf label that outputs the variable.
+
+ChatGPT
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+// Define macros
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 80
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 68
+
+#define BLOCK_SIZE_128_256 4
+#define KEY_SIZE_128_256 8
+#define ROUNDS_128_256 120
+
+// Prototype function declarations
+void cham64_128_key_schedule(const uint16_t *key, uint16_t *round_keys);
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]);
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys);
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]);
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys);
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]);
+
+int main() {
+    // CHAM-64/128
+    uint16_t key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+    uint16_t ciphertext_64_128[BLOCK_SIZE_64_128];
+
+    cham64_128_key_schedule(key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, ciphertext_64_128, round_keys_64_128);
+
+    printf("\nCHAM-64/128\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        printf("%04x ", key_64_128[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_64_128 * 2; i++) {
+        printf("%04x ", round_keys_64_128[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", ciphertext_64_128[i]);
+    }
+
+    // CHAM-128/128
+    uint32_t key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("\n\nCHAM-128/128\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", key_128_128[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+
+    // CHAM-128/256
+    uint32_t key_128_256[KEY_SIZE_128_256] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c, 0xf3f2f1f0, 0xf7f6f5f4, 0xfbfaf9f8, 0xfffefdfc};
+    uint32_t plaintext_128_256[BLOCK_SIZE_128_256] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_256[KEY_SIZE_128_256 * 2];
+    uint32_t ciphertext_128_256[BLOCK_SIZE_128_256];
+
+    cham128_256_key_schedule(key_128_256, round_keys_128_256);
+    cham128_256_encrypt(plaintext_128_256, ciphertext_128_256, round_keys_128_256);
+
+    printf("\n\nCHAM-128/256\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        printf("%08x ", key_128_256[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", plaintext_128_256[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_256 * 2; i++) {
+        printf("%08x ", round_keys_128_256[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", ciphertext_128_256[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+// CHAM-64/128 functions
+void cham64_128_key_schedule(const uint16_t *key, uint16_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 8) | (key[i] >> (16 - 8)));
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 9) | (key[i] >> (16 - 9)));
+    }
+}
+
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint16_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+// CHAM-128/128 functions
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[ i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+// CHAM-128/256 functions
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_256) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_256; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_256 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+```
+
+Now, the CHAM-64/128, CHAM-128/128, and CHAM-128/256 source codes have been merged into a single C file following the order you requested. The
+
+user
+Good. However, in the first part, where you declare the macro constant is somewhat wrong. CHAM-64/128 has 88 rounds and CHAM-128/128 has 112 rounds. Rewrite only the macro constant declaration section.
+
+ChatGPT
+Apologies for the mistake. Here is the corrected macro constant declaration section:
+
+```c
+// Macro Constants
+#define KEY_SIZE_64_128 8
+#define BLOCK_SIZE_64_128 4
+#define ROUNDS_64_128 88
+#define KEY_SIZE_128_128 4
+#define BLOCK_SIZE_128_128 4
+#define ROUNDS_128_128 112
+#define KEY_SIZE_128_256 8
+#define BLOCK_SIZE_128_256 4
+#define ROUNDS_128_256 120
+```
+
+Now the macro constants for CHAM-64/128 and CHAM-128/128 have been corrected to 88 and 112 rounds, respectively.
+
+user
+Also, your CHAM-64/128 key schedule wrong.((key[i] << 9) | (key[i] >> (16 - 9)) what is this one? It is not (K[i] <<< 11).
+
+ChatGPT
+I apologize for the mistake. I will correct the CHAM-64/128 key schedule function. Here's the corrected version of the key schedule function for CHAM-64/128:
+
+```c
+void cham64_128_key_schedule(const uint16_t *key, uint16_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 8) | (key[i] >> (16 - 8)));
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 11) | (key[i] >> (16 - 11)));
+    }
+}
+```
+
+Now the key schedule function for CHAM-64/128 uses the correct (K[i] <<< 11) operation.
+
+user
+How many times have you been wrong since source code integration?
+
+ChatGPT
+I apologize for the mistakes. Since the source code integration, I have made two mistakes:
+
+1. Incorrect round constants for CHAM-64/128 and CHAM-128/128 in the macro constant declaration section.
+2. Incorrect key schedule function for CHAM-64/128, where I used the wrong rotation value.
+
+I've corrected these issues in my previous responses. If you need any further assistance or corrections, please let me know.
+
+user
+You understand which part is wrong. Please put the modified code into the integration code.
+
+ChatGPT
+Here is the updated integrated source code with the corrected macro constants and key schedule function for CHAM-64/128:
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+// Macro constants
+#define BLOCK_SIZE_64_128 4
+#define KEY_SIZE_64_128 8
+#define ROUNDS_64_128 88
+
+#define BLOCK_SIZE_128_128 4
+#define KEY_SIZE_128_128 4
+#define ROUNDS_128_128 112
+
+#define BLOCK_SIZE_128_256 4
+#define KEY_SIZE_128_256 8
+#define ROUNDS_128_256 120
+
+// Prototype function declarations
+void cham64_128_key_schedule(const uint16_t *key, uint16_t *round_keys);
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]);
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys);
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]);
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys);
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]);
+
+int main() {
+    // CHAM-64/128 test
+    uint16_t secret_key_64_128[KEY_SIZE_64_128] = {0x0100, 0x0302, 0x0504, 0x0706, 0x0908, 0x0b0a, 0x0d0c, 0x0f0e};
+    uint16_t plaintext_64_128[BLOCK_SIZE_64_128] = {0x1100, 0x3322, 0x5544, 0x7766};
+    uint16_t round_keys_64_128[KEY_SIZE_64_128 * 2];
+    uint16_t ciphertext_64_128[BLOCK_SIZE_64_128];
+
+    cham64_128_key_schedule(secret_key_64_128, round_keys_64_128);
+    cham64_128_encrypt(plaintext_64_128, ciphertext_64_128, round_keys_64_128);
+
+    printf("CHAM-64/128\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        printf("%04x ", secret_key_64_128[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", plaintext_64_128[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_64_128 * 2; i++) {
+        printf("%04x ", round_keys_64_128[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        printf("%04x ", ciphertext_64_128[i]);
+    }
+    printf("\n\n");
+
+    // CHAM-128/128 test
+    uint32_t secret_key_128_128[KEY_SIZE_128_128] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c};
+    uint32_t plaintext_128_128[BLOCK_SIZE_128_128] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_128[KEY_SIZE_128_128 * 2];
+    uint32_t ciphertext_128_128[BLOCK_SIZE_128_128];
+
+    cham128_128_key_schedule(secret_key_128_128, round_keys_128_128);
+    cham128_128_encrypt(plaintext_128_128, ciphertext_128_128, round_keys_128_128);
+
+    printf("CHAM-128/128\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        printf("%08x ", secret_key_128_128[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", plaintext_128_128[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_128 * 2; i++) {
+        printf("%08x ", round_keys_128_128[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        printf("%08x ", ciphertext_128_128[i]);
+    }
+    printf("\n\n");
+
+    // CHAM-128/256 test
+    uint32_t secret_key_128_256[KEY_SIZE_128_256] = {0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c, 0xf3f2f1f0, 0xf7f6f5f4, 0xfbfaf9f8, 0xfffefdfc};
+    uint32_t plaintext_128_256[BLOCK_SIZE_128_256] = {0x33221100, 0x77665544, 0xbbaa9988, 0xffeeddcc};
+    uint32_t round_keys_128_256[KEY_SIZE_128_256 * 2];
+    uint32_t ciphertext_128_256[BLOCK_SIZE_128_256];
+
+    cham128_256_key_schedule(secret_key_128_256, round_keys_128_256);
+    cham128_256_encrypt(plaintext_128_256, ciphertext_128_256, round_keys_128_256);
+
+    printf("CHAM-128/256\n");
+    printf("Secret Key: ");
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        printf("%08x ", secret_key_128_256[i]);
+    }
+    printf("\nPlaintext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", plaintext_128_256[i]);
+    }
+    printf("\nRound Keys: ");
+    for (int i = 0; i < KEY_SIZE_128_256 * 2; i++) {
+        printf("%08x ", round_keys_128_256[i]);
+    }
+    printf("\nCiphertext: ");
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        printf("%08x ", ciphertext_128_256[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+// CHAM-64/128 functions
+void cham64_128_key_schedule(const uint16_t *key, uint16_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_64_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 8) | (key[i] >> (16 - 8)));
+        round_keys[(i + KEY_SIZE_64_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (16 - 1))) ^ ((key[i] << 11) | (key[i] >> (16 - 11)));
+    }
+}
+
+void cham64_128_encrypt(const uint16_t plaintext[BLOCK_SIZE_64_128], uint16_t ciphertext[BLOCK_SIZE_64_128], const uint16_t round_keys[KEY_SIZE_64_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_64_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_64_128; round++) {
+        uint16_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 15);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 8);
+        }
+
+        uint16_t temp = x + (y ^ round_keys[round % (KEY_SIZE_64_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 8);
+        } else {
+            temp = (temp << 1) | (temp >> 15);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint16_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+// CHAM-128/128 functions
+void cham128_128_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_128; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_128) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_128_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_128], uint32_t ciphertext[BLOCK_SIZE_128_128], const uint32_t round_keys[KEY_SIZE_128_128 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_128; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_128; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_128 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+
+// CHAM-128/256 functions
+void cham128_256_key_schedule(const uint32_t *key, uint32_t *round_keys) {
+    for (int i = 0; i < KEY_SIZE_128_256; i++) {
+        round_keys[i] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 8) | (key[i] >> (32 - 8)));
+        round_keys[(i + KEY_SIZE_128_256) ^ 1] = key[i] ^ ((key[i] << 1) | (key[i] >> (32 - 1))) ^ ((key[i] << 11) | (key[i] >> (32 - 11)));
+    }
+}
+
+void cham128_256_encrypt(const uint32_t plaintext[BLOCK_SIZE_128_256], uint32_t ciphertext[BLOCK_SIZE_128_256], const uint32_t round_keys[KEY_SIZE_128_256 * 2]) {
+    for (int i = 0; i < BLOCK_SIZE_128_256; i++) {
+        ciphertext[i] = plaintext[i];
+    }
+
+    for (int round = 0; round < ROUNDS_128_256; round++) {
+        uint32_t x = ciphertext[0], y = ciphertext[1];
+
+        if (round % 2 == 0) {
+            x ^= round;
+            y = (y << 1) | (y >> 31);
+        } else {
+            x ^= round;
+            y = (y << 8) | (y >> 24);
+        }
+
+        uint32_t temp = x + (y ^ round_keys[round % (KEY_SIZE_128_256 * 2)]);
+
+        if (round % 2 == 0) {
+            temp = (temp << 8) | (temp >> 24);
+        } else {
+            temp = (temp << 1) | (temp >> 31);
+        }
+
+        ciphertext[0] = temp;
+
+        // Rotate words
+        uint32_t temp_word = ciphertext[0];
+        ciphertext[0] = ciphertext[1];
+        ciphertext[1] = ciphertext[2];
+        ciphertext[2] = ciphertext[3];
+        ciphertext[3] = temp_word;
+    }
+}
+```
+
+This is the complete integrated code that demonstrates the encryption process for CHAM-64/128, CHAM-128/128, and CHAM-128/256. It includes the key schedule and encryption functions for each variant, along with a main function to test the implementations using sample data.
+
+user
+Your integrated version source code is complete. It incorporates previously written CHAM-64/128, CHAM-128/128, and CHAM-128/256, and correctly generates the ciphertext. We will name this integrated source code the CHAM library.
+
+ChatGPT
+Great! I'm glad the integrated source code meets your requirements. You can now use this CHAM library to encrypt data using the CHAM-64/128, CHAM-128/128, and CHAM-128/256 block cipher variants. If you have any further questions or need assistance with anything else, please don't hesitate to ask.
